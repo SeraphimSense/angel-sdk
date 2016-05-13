@@ -68,4 +68,70 @@
             android:layout_alignParentBottom="true"
             android:id="@+id/view_line_3" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <com.angel.sample_app.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graph_gyro_x"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/view_line_4"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFF"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/view_line_4" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <com.angel.sample_app.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graph_gyro_y"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/view_line_5"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFF"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/view_line_5" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <com.angel.sample_app.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graph_gyro_z"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/view_line_6"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFF"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/view_line_6" />
+    </RelativeLayout>
 </LinearLayout>
