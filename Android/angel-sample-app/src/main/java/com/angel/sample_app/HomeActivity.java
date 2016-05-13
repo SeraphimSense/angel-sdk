@@ -47,6 +47,7 @@ import com.angel.sdk.BleDevice;
 import com.angel.sdk.ChAccelerationEnergyMagnitude;
 import com.angel.sdk.ChAccelerationWaveform;
 import com.angel.sdk.ChBatteryLevel;
+import com.angel.sdk.ChGyroscopeWaveform;
 import com.angel.sdk.ChHeartRateMeasurement;
 import com.angel.sdk.ChOpticalWaveform;
 import com.angel.sdk.ChStepCount;
@@ -88,6 +89,12 @@ public class HomeActivity extends Activity {
             mBlueOpticalWaveformView.setStrokeColor(0xffffffff);
             mAccelerationWaveformView = (GraphView) findViewById(R.id.graph_acceleration);
             mAccelerationWaveformView.setStrokeColor(0xfff7a300);
+            mGyroscopeXWaveformView = (GraphView) findViewById(R.id.graph_gyro_x);
+            mGyroscopeXWaveformView.setStrokeColor(0xfff7a300);
+            mGyroscopeYWaveformView = (GraphView) findViewById(R.id.graph_gyro_y);
+            mGyroscopeYWaveformView.setStrokeColor(0xfff7a300);
+            mGyroscopeZWaveformView = (GraphView) findViewById(R.id.graph_gyro_z);
+            mGyroscopeZWaveformView.setStrokeColor(0xfff7a300);
         }
     }
 
@@ -173,6 +180,7 @@ public class HomeActivity extends Activity {
         public void onBluetoothServicesDiscovered(BleDevice bleDevice) {
             bleDevice.getService(SrvWaveformSignal.class).getAccelerationWaveform().enableNotifications(mAccelerationWaveformListener);
             bleDevice.getService(SrvWaveformSignal.class).getOpticalWaveform().enableNotifications(mOpticalWaveformListener);
+            bleDevice.getService(SrvWaveformSignal.class).getGyroscopeWaveform().enableNotifications(mGyroscopeWaveformListener);
         }
 
         @Override
@@ -226,6 +234,22 @@ public class HomeActivity extends Activity {
             if (accelerationWaveformValue != null && accelerationWaveformValue.wave != null && mAccelerationWaveformView != null)
                 for (Integer item : accelerationWaveformValue.wave) {
                     mAccelerationWaveformView.addValue(item);
+                }
+
+        }
+    };
+
+    private final BleCharacteristic.ValueReadyCallback<ChGyroscopeWaveform.GyroscopeWaveformValue> mGyroscopeWaveformListener = new BleCharacteristic.ValueReadyCallback<ChGyroscopeWaveform.GyroscopeWaveformValue>() {
+        @Override
+        public void onValueReady(ChGyroscopeWaveform.GyroscopeWaveformValue gyroscopeWaveformValue) {
+            if (gyroscopeWaveformValue != null && gyroscopeWaveformValue.wave != null
+                    && mGyroscopeXWaveformView != null
+                    && mGyroscopeYWaveformView != null
+                    && mGyroscopeZWaveformView != null)
+                for (ChGyroscopeWaveform.GyroscopeXYZValues item : gyroscopeWaveformValue.wave) {
+                    mGyroscopeXWaveformView.addValue(item.getX());
+                    mGyroscopeYWaveformView.addValue(item.getY());
+                    mGyroscopeZWaveformView.addValue(item.getZ());
                 }
 
         }
@@ -387,6 +411,20 @@ public class HomeActivity extends Activity {
         imageView.startAnimation(effect);
     }
 
+    private void displayGyroscopeWaveForm(final int accelerationEnergyMagnitude) {
+        TextView textView = (TextView) findViewById(R.id.textview_acceleration);
+        Assert.assertNotNull(textView);
+        textView.setText(accelerationEnergyMagnitude + "g");
+
+        ScaleAnimation effect =  new ScaleAnimation(1f, 0.5f, 1f, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        effect.setDuration(ANIMATION_DURATION);
+        effect.setRepeatMode(Animation.REVERSE);
+        effect.setRepeatCount(1);
+
+        View imageView = findViewById(R.id.imageview_acceleration);
+        imageView.startAnimation(effect);
+    }
+
     private void displayOnDisconnect() {
         displaySignalStrength(-99);
         displayBatteryLevel(0);
@@ -406,6 +444,7 @@ public class HomeActivity extends Activity {
     private int orientation;
 
     private GraphView mAccelerationWaveformView, mBlueOpticalWaveformView, mGreenOpticalWaveformView;
+    private GraphView mGyroscopeXWaveformView,mGyroscopeYWaveformView,mGyroscopeZWaveformView;
 
     private BleDevice mBleDevice;
     private String mBleDeviceAddress;

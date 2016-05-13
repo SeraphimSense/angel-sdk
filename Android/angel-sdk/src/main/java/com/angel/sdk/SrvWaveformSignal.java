@@ -39,7 +39,6 @@ import java.util.UUID;
 public class SrvWaveformSignal extends BleService {
     public final static UUID SERVICE_UUID = UUID.fromString("481d178c-10dd-11e4-b514-b2227cce2b54");
 
-
     public SrvWaveformSignal(BluetoothGattService gattService, BleDevice bleDevice) {
         super(SERVICE_UUID, gattService, bleDevice);
 
@@ -50,6 +49,7 @@ public class SrvWaveformSignal extends BleService {
             // we have mistakes with the definition of one of the characteristics
             mOpticalWaveform = createAndRegisterCharacteristic(ChOpticalWaveform.class);
             mAccelerationWaveform = createAndRegisterCharacteristic(ChAccelerationWaveform.class);
+            mGyroscopeWaveform = createAndRegisterCharacteristic(ChGyroscopeWaveform.class);
         } catch (InstantiationException e) {
             throw new AssertionError();
         } catch (IllegalAccessException e) {
@@ -61,8 +61,8 @@ public class SrvWaveformSignal extends BleService {
         } catch (InvocationTargetException e) {
             throw new AssertionError();
         }
-        
-        if (mOpticalWaveform == null || mAccelerationWaveform == null) {
+
+        if (mOpticalWaveform == null || mAccelerationWaveform == null || mGyroscopeWaveform == null) {
             throw new AssertionError();
         }
     }
@@ -78,14 +78,19 @@ public class SrvWaveformSignal extends BleService {
         return mOpticalWaveform;
     }
 
-    
+
     /** Get access to Acceleration Waveform characteristic */
     public ChAccelerationWaveform getAccelerationWaveform() {
         return mAccelerationWaveform;
     }
-    
-    
+
+    /** Get access to Gyroscope Waveform characteristic */
+    public ChGyroscopeWaveform getGyroscopeWaveform() {
+        return mGyroscopeWaveform;
+    }
+
+
     private ChOpticalWaveform mOpticalWaveform;
     private ChAccelerationWaveform mAccelerationWaveform;
-
+    private ChGyroscopeWaveform mGyroscopeWaveform;
 }
