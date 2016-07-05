@@ -10,3 +10,8 @@ Simply put, Angel Sensor is a wearable component to build stuff with.
 Full API reference for Android can be found [here](https://angelsensor.github.io/angel-sdk/).
 
 Angel Sensor SDK is under active development. For more info, please refer to [www.angelsensor.com/develop](http://www.angelsensor.com/develop/).
+
+# Community
+You can get involved with the Angel Sensor community via the following channel(s):
+
+- [#angelsensor on Freenode IRC](https://webchat.freenode.net/?channels=angelsensor)
