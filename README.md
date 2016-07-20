@@ -10,13 +10,15 @@ Simply put, Angel Sensor is a wearable component to build stuff with.
 Full API reference for Android can be found [here](https://angelsensor.github.io/angel-sdk/).
 
 # Community Edition
-This is the INOFFICIAL community edition. As the developers seem busy at the moment and we as community felt the need for a central place for issues and a public wiki, we created this this fork.
+This is the INOFFICIAL community edition.
+As the developers seem busy at the moment and we as community felt the need for a central place for issues and a public wiki, we created this this fork.
 
 # Get involved
 In order to participate in our open development process, you may:
-* open an issue in this repository
-* open a pull request with your changes and improvements
-* join us on [IRC](https://webchat.freenode.net/?channels=angelsensor)
+* open an [issue](https://github.com/AngelSensorCommunityEdition/angel-sdk-community/issues) if you have a problem or suggestions
+* open a [pull request](https://github.com/AngelSensorCommunityEdition/angel-sdk-community/pulls) with your changes and improvements
+* join us on [IRC](https://webchat.freenode.net/?channels=angelsensor) to chat with likeminded people ;-)
+* contribute to our [wiki](https://github.com/AngelSensorCommunityEdition/angel-sdk-community/wiki)
 
 
 Angel Sensor SDK is under active development. For more info, please refer to [www.angelsensor.com/develop](http://www.angelsensor.com/develop/).
