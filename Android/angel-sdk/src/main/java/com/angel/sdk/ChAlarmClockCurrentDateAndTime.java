@@ -37,7 +37,7 @@ import java.util.UUID;
 
 
 public class ChAlarmClockCurrentDateAndTime extends ChDayDateTime {
-    public final static UUID CHARACTERISTIC_UUID = UUID.fromString("7e658eab-70be-4040-9f4e-59b4098ad231");
+    public final static UUID CHARACTERISTIC_UUID = UUID.fromString("00002a08-0000-1000-8000-00805f9b34fb");
 
 
     public ChAlarmClockCurrentDateAndTime(BluetoothGattCharacteristic gattharacteristic,
