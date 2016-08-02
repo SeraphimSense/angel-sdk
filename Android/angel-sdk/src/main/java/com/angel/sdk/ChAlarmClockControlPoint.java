@@ -54,19 +54,30 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
 
 
     public void requestNumberOfAlarms() {
+        byte[] bytes = { OP_CODE_NUMBER_OF_ALARMS };
         BluetoothGattCharacteristic c = getBaseGattCharacteristic();
-        c.setValue(NUMBER_OF_ALARMS);
+        c.setValue(bytes);
         getBleDevice().writeCharacteristic(c);
     }
 
     public void requestMaxNumberOfAlarms() {
+        byte[] bytes = { OP_CODE_MAX_NUMBER_OF_ALARMS };
         BluetoothGattCharacteristic c = getBaseGattCharacteristic();
-        c.setValue(MAX_NUMBER_OF_ALARMS);
+        c.setValue(bytes);
         getBleDevice().writeCharacteristic(c);
     }
 
     public void adjustTime(GregorianCalendar dateTime) {
+        byte[] opcode   = {OP_CODE_AJUST_CLOCK_DATE_TIME};
+        byte[] date     = BleDayDateTime.SerializeDateTime(dateTime);
 
+        byte[] bytes  = new byte[opcode.length + date.length];
+        System.arraycopy(opcode, 0, bytes, 0, opcode.length);
+        System.arraycopy(date, 0, bytes, opcode.length, date.length);
+
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(bytes);
+        getBleDevice().writeCharacteristic(c);
     }
 
 
@@ -91,6 +102,7 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
         return c.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1);
     }
 
-    private final static byte[] MAX_NUMBER_OF_ALARMS = { 1 };
-    private final static byte[] NUMBER_OF_ALARMS = { 2 };
+    private final static int OP_CODE_MAX_NUMBER_OF_ALARMS       = 1;
+    private final static int OP_CODE_NUMBER_OF_ALARMS           = 2;
+    private final static int OP_CODE_AJUST_CLOCK_DATE_TIME      = 7;
 }

@@ -117,6 +117,14 @@ public class SrvAlarmClock extends BleService {
         getControlPointCharacteristic().requestMaxNumberOfAlarms();
     }
 
+    /**
+     * Set the devices alarm clock date and time
+     * @param dateTime
+     */
+    public void setAlarmClockDateTime(GregorianCalendar dateTime) {
+        getControlPointCharacteristic().adjustTime(dateTime);
+    }
+
     private ChAlarmClockCurrentDateAndTime mChCurrentDateAndTime;
     private ChAlarmClockControlPoint mChAlarmClockControlPoint;
 }
