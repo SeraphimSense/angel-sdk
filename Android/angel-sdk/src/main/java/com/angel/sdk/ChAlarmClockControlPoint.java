@@ -59,6 +59,12 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
         getBleDevice().writeCharacteristic(c);
     }
 
+    public void requestMaxNumberOfAlarms() {
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(MAX_NUMBER_OF_ALARMS);
+        getBleDevice().writeCharacteristic(c);
+    }
+
     public void adjustTime(GregorianCalendar dateTime) {
 
     }
@@ -85,5 +91,6 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
         return c.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1);
     }
 
+    private final static byte[] MAX_NUMBER_OF_ALARMS = { 1 };
     private final static byte[] NUMBER_OF_ALARMS = { 2 };
 }

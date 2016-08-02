@@ -108,6 +108,15 @@ public class SrvAlarmClock extends BleService {
         getControlPointCharacteristic().requestNumberOfAlarms();
     }
 
+    /**
+     * Requests the maximum number of supported alarms on the device. The response
+     * data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     */
+    public void requestMaxNumberOfAlarms() {
+        getControlPointCharacteristic().requestMaxNumberOfAlarms();
+    }
+
     private ChAlarmClockCurrentDateAndTime mChCurrentDateAndTime;
     private ChAlarmClockControlPoint mChAlarmClockControlPoint;
 }
