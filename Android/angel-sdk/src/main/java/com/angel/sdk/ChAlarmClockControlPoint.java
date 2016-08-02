@@ -40,7 +40,7 @@ import java.util.UUID;
  * 
  */
 public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
-    private final static UUID CHARACTERISTIC_UUID = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
+    private final static UUID CHARACTERISTIC_UUID = UUID.fromString("e4616b0c-22d5-11e4-a7bf-b2227cce2b54");
 
 
     public ChAlarmClockControlPoint(BluetoothGattCharacteristic vanillaCharacteristic,
@@ -48,6 +48,16 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
         super(CHARACTERISTIC_UUID, vanillaCharacteristic, bleDevice);
     }
 
+    public ChAlarmClockControlPoint() {
+        super(CHARACTERISTIC_UUID);
+    }
+
+
+    public void requestNumberOfAlarms() {
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(NUMBER_OF_ALARMS);
+        getBleDevice().writeCharacteristic(c);
+    }
 
     public void adjustTime(GregorianCalendar dateTime) {
 
@@ -71,6 +81,9 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
 
     @Override
     protected Integer processCharacteristicValue() {
-        return null;
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        return c.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1);
     }
+
+    private final static byte[] NUMBER_OF_ALARMS = { 2 };
 }

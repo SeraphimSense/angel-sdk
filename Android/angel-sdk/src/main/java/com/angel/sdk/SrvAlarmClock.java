@@ -52,9 +52,10 @@ public class SrvAlarmClock extends BleService {
         super(SERVICE_UUID, vanillaGattService, bleDevice);
 
         try {
-            mChCurrentDateAndTime   = createAndRegisterCharacteristic(ChAlarmClockCurrentDateAndTime.class);
+            mChCurrentDateAndTime       = createAndRegisterCharacteristic(ChAlarmClockCurrentDateAndTime.class);
+            mChAlarmClockControlPoint   = createAndRegisterCharacteristic(ChAlarmClockControlPoint.class);
         } catch (InstantiationException e) {
-        throw new AssertionError();
+            throw new AssertionError();
         } catch (IllegalAccessException e) {
             throw new AssertionError();
         } catch (NoSuchMethodException e) {
@@ -78,9 +79,7 @@ public class SrvAlarmClock extends BleService {
      * Get the characteristic that allows to control the behavior of the alarm
      * clock.
      */
-    public ChAlarmClockControlPoint getControlPointCharacteristic() {
-        return null;
-    }
+    public ChAlarmClockControlPoint getControlPointCharacteristic() { return mChAlarmClockControlPoint; }
     public ChAlarmClockCurrentDateAndTime getCurrentDateAndTimeCharacteristic() { return mChCurrentDateAndTime; }
 
 
@@ -100,5 +99,15 @@ public class SrvAlarmClock extends BleService {
         getCurrentDateAndTimeCharacteristic().readValue(callback);
     }
 
+    /**
+     * Requests the number of alarms defined on the device. The response
+     * data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     */
+    public void requestNumberOfAlarms() {
+        getControlPointCharacteristic().requestNumberOfAlarms();
+    }
+
     private ChAlarmClockCurrentDateAndTime mChCurrentDateAndTime;
+    private ChAlarmClockControlPoint mChAlarmClockControlPoint;
 }
