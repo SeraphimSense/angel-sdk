@@ -71,9 +71,7 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
         byte[] opcode   = {OP_CODE_AJUST_CLOCK_DATE_TIME};
         byte[] date     = BleDayDateTime.SerializeDateTime(dateTime);
 
-        byte[] bytes  = new byte[opcode.length + date.length];
-        System.arraycopy(opcode, 0, bytes, 0, opcode.length);
-        System.arraycopy(date, 0, bytes, opcode.length, date.length);
+        byte[] bytes    = this.concatBytes(opcode, date);
 
         BluetoothGattCharacteristic c = getBaseGattCharacteristic();
         c.setValue(bytes);
@@ -82,7 +80,14 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
 
 
     public void addAlarm(GregorianCalendar dateTime) {
+        byte[] opcode   = {OP_CODE_ADD_ALARM};
+        byte[] date     = BleDayDateTime.SerializeDateTime(dateTime);
 
+        byte[] bytes    = this.concatBytes(opcode, date);
+
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(bytes);
+        getBleDevice().writeCharacteristic(c);
     }
 
 
@@ -96,6 +101,15 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
     }
 
 
+    private byte[] concatBytes(byte[] a, byte[] b) {
+        byte[] bytes  = new byte[a.length + b.length];
+        System.arraycopy(a, 0, bytes, 0, a.length);
+        System.arraycopy(b, 0, bytes, a.length, b.length);
+
+        return bytes;
+    }
+
+
     @Override
     protected Integer processCharacteristicValue() {
         BluetoothGattCharacteristic c = getBaseGattCharacteristic();
@@ -104,5 +118,6 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
 
     private final static int OP_CODE_MAX_NUMBER_OF_ALARMS       = 1;
     private final static int OP_CODE_NUMBER_OF_ALARMS           = 2;
+    private final static int OP_CODE_ADD_ALARM                  = 4;
     private final static int OP_CODE_AJUST_CLOCK_DATE_TIME      = 7;
 }

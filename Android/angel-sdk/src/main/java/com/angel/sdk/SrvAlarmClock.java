@@ -119,10 +119,18 @@ public class SrvAlarmClock extends BleService {
 
     /**
      * Set the devices alarm clock date and time
-     * @param dateTime
+     * @param dateTime Date and time to set
      */
     public void setAlarmClockDateTime(GregorianCalendar dateTime) {
         getControlPointCharacteristic().adjustTime(dateTime);
+    }
+
+    /**
+     * Set one of the devices unset alarms to a date and time
+     * @param alarmDateTime Date and time the alarm should go off
+     */
+    public void setAlarm(GregorianCalendar alarmDateTime) {
+        getControlPointCharacteristic().addAlarm(alarmDateTime);
     }
 
     private ChAlarmClockCurrentDateAndTime mChCurrentDateAndTime;
