@@ -19,6 +19,7 @@ In order to participate in our open development process, you may:
 * open a [pull request](https://github.com/AngelSensorCommunityEdition/angel-sdk-community/pulls) with your changes and improvements
 * join us on [IRC](https://webchat.freenode.net/?channels=angelsensor) to chat with likeminded people ;-)
 * contribute to our [wiki](https://github.com/AngelSensorCommunityEdition/angel-sdk-community/wiki)
+* open a new and discuss existing threads in  [OpenHardware-Forum](https://www.openhealthhub.org/c/open-medical-hardware)
 
 
 Angel Sensor SDK is under active development. For more info, please refer to [www.angelsensor.com/develop](http://www.angelsensor.com/develop/).
