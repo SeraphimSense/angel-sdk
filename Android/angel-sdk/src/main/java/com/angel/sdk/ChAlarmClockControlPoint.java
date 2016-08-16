@@ -32,7 +32,6 @@ package com.angel.sdk;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.UUID;
@@ -147,11 +146,11 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<ChAlarmClockCont
         public byte[] mResponseValue;
 
         public int getNumberOfAlarms() {
-            return ByteBuffer.wrap(mResponseValue).get(1);
+            return mResponseValue[1];
         }
 
         public int getMaxNumberOfAlarms() {
-            return ByteBuffer.wrap(mResponseValue).get(1);
+            return mResponseValue[1];
         }
 
         public GregorianCalendar readAlarm() {
