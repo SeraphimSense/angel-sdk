@@ -32,6 +32,8 @@ package com.angel.sdk;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
@@ -39,7 +41,7 @@ import java.util.UUID;
 /**
  * 
  */
-public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
+public class ChAlarmClockControlPoint extends BleCharacteristic<ChAlarmClockControlPoint.AlarmClockValue> {
     private final static UUID CHARACTERISTIC_UUID = UUID.fromString("e4616b0c-22d5-11e4-a7bf-b2227cce2b54");
 
 
@@ -90,14 +92,30 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
         getBleDevice().writeCharacteristic(c);
     }
 
+    public void readAlarm(int alarmId) {
+        byte[] bytes   = { OP_CODE_READ_ALARM, (new Integer(alarmId).byteValue())};
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(bytes);
+        getBleDevice().writeCharacteristic(c);
+    }
 
-    public void removeAlarm(GregorianCalendar dateTime) {
 
+    public void removeAlarm(int alarmId) {
+
+        byte[] bytes    = {OP_CODE_REMOVE_ALARM, (new Integer(alarmId).byteValue())};
+
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(bytes);
+        getBleDevice().writeCharacteristic(c);
     }
 
 
     public void removeAllAlarms() {
+        byte[] bytes    = {OP_CODE_REMOVE_ALL_ALARMS};
 
+        BluetoothGattCharacteristic c = getBaseGattCharacteristic();
+        c.setValue(bytes);
+        getBleDevice().writeCharacteristic(c);
     }
 
 
@@ -111,13 +129,53 @@ public class ChAlarmClockControlPoint extends BleCharacteristic<Integer> {
 
 
     @Override
-    protected Integer processCharacteristicValue() {
+    protected AlarmClockValue processCharacteristicValue() {
         BluetoothGattCharacteristic c = getBaseGattCharacteristic();
-        return c.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1);
+
+        int statusCode = c.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+
+        AlarmClockValue alarmClockValue = new AlarmClockValue();
+        alarmClockValue.mStatusCode = statusCode;
+        alarmClockValue.mResponseValue = c.getValue();
+
+        return alarmClockValue;
     }
 
-    private final static int OP_CODE_MAX_NUMBER_OF_ALARMS       = 1;
-    private final static int OP_CODE_NUMBER_OF_ALARMS           = 2;
-    private final static int OP_CODE_ADD_ALARM                  = 4;
-    private final static int OP_CODE_AJUST_CLOCK_DATE_TIME      = 7;
+    public class AlarmClockValue {
+
+        public int mStatusCode;
+        public byte[] mResponseValue;
+
+        public int getNumberOfAlarms() {
+            return ByteBuffer.wrap(mResponseValue).get(1);
+        }
+
+        public int getMaxNumberOfAlarms() {
+            return ByteBuffer.wrap(mResponseValue).get(1);
+        }
+
+        public GregorianCalendar readAlarm() {
+            return BleDayDateTime.Deserialize(Arrays.copyOfRange(mResponseValue, 1, 8));
+        }
+
+        public int getAlarmId() {
+            return mStatusCode;
+        }
+
+        public int getStatus() {
+            return mStatusCode;
+        }
+
+        public int getAlarmCount() {
+            return 0;
+        }
+    }
+
+    private final static short OP_CODE_MAX_NUMBER_OF_ALARMS       = 1;
+    private final static short OP_CODE_NUMBER_OF_ALARMS           = 2;
+    private final static short OP_CODE_READ_ALARM                 = 3;
+    private final static short OP_CODE_ADD_ALARM                  = 4;
+    private final static short OP_CODE_REMOVE_ALARM               = 5;
+    private final static short OP_CODE_REMOVE_ALL_ALARMS          = 6;
+    private final static short OP_CODE_AJUST_CLOCK_DATE_TIME      = 7;
 }

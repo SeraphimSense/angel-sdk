@@ -118,7 +118,9 @@ public class SrvAlarmClock extends BleService {
     }
 
     /**
-     * Set the devices alarm clock date and time
+     * Set the devices alarm clock date and time.
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
      * @param dateTime Date and time to set
      */
     public void setAlarmClockDateTime(GregorianCalendar dateTime) {
@@ -127,10 +129,41 @@ public class SrvAlarmClock extends BleService {
 
     /**
      * Set one of the devices unset alarms to a date and time
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
      * @param alarmDateTime Date and time the alarm should go off
      */
     public void setAlarm(GregorianCalendar alarmDateTime) {
         getControlPointCharacteristic().addAlarm(alarmDateTime);
+    }
+
+    /**
+     * Request information about a specific alarm from the device.
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     * @param alarmId The id of an alarm
+     */
+    public void requestAlarm(int alarmId) {
+        getControlPointCharacteristic().readAlarm(alarmId);
+    }
+
+    /**
+     * Remove a specific alarm from the device
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     * @param alarmId The id of the alarm in question
+     */
+    public void removeAlarm(int alarmId) {
+        getControlPointCharacteristic().removeAlarm(alarmId);
+    }
+
+    /**
+     * Deletes all active or past alarms from the device
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     */
+    public void removeAllAlarms() {
+        getControlPointCharacteristic().removeAllAlarms();
     }
 
     private ChAlarmClockCurrentDateAndTime mChCurrentDateAndTime;
