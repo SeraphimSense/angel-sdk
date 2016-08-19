@@ -34,6 +34,7 @@ import android.bluetooth.BluetoothGattService;
 
 import com.angel.sdk.BleCharacteristic.ValueReadyCallback;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.UUID;
@@ -43,32 +44,43 @@ import java.util.UUID;
  * 
  * 
  */
-class SrvAlarmClock extends BleService {
+public class SrvAlarmClock extends BleService {
     public final static UUID SERVICE_UUID = UUID.fromString("7cd50edd-8bab-44ff-a8e8-82e19393af10");
 
 
     public SrvAlarmClock(BluetoothGattService vanillaGattService, BleDevice bleDevice) {
         super(SERVICE_UUID, vanillaGattService, bleDevice);
-    }
 
+        try {
+            mChCurrentDateAndTime       = createAndRegisterCharacteristic(ChAlarmClockCurrentDateAndTime.class);
+            mChAlarmClockControlPoint   = createAndRegisterCharacteristic(ChAlarmClockControlPoint.class);
+        } catch (InstantiationException e) {
+            throw new AssertionError();
+        } catch (IllegalAccessException e) {
+            throw new AssertionError();
+        } catch (NoSuchMethodException e) {
+            throw new AssertionError();
+        } catch (IllegalArgumentException e) {
+            throw new AssertionError();
+        } catch (InvocationTargetException e) {
+            throw new AssertionError();
+        }
+    }
 
     /**
      * Creates a non-operation instance used to investigate static properties in
      * contexts where these properties are accessible only via a class instance.
      * Calling most methods of such an object will cause an undefined behavior.
      */
-    public SrvAlarmClock() {
-        super(SERVICE_UUID);
-    }
+    public SrvAlarmClock() { super(SERVICE_UUID); }
 
 
     /**
      * Get the characteristic that allows to control the behavior of the alarm
      * clock.
      */
-    public ChAlarmClockControlPoint getControlPointCharacteristic() {
-        return null;
-    }
+    public ChAlarmClockControlPoint getControlPointCharacteristic() { return mChAlarmClockControlPoint; }
+    public ChAlarmClockCurrentDateAndTime getCurrentDateAndTimeCharacteristic() { return mChCurrentDateAndTime; }
 
 
     /**
@@ -84,5 +96,76 @@ class SrvAlarmClock extends BleService {
      * returned asynchronously via the callback object.
      */
     public void readCurrentDateTime(ValueReadyCallback<GregorianCalendar> callback) {
+        getCurrentDateAndTimeCharacteristic().readValue(callback);
     }
+
+    /**
+     * Requests the number of alarms defined on the device. The response
+     * data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     */
+    public void requestNumberOfAlarms() {
+        getControlPointCharacteristic().requestNumberOfAlarms();
+    }
+
+    /**
+     * Requests the maximum number of supported alarms on the device. The response
+     * data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     */
+    public void requestMaxNumberOfAlarms() {
+        getControlPointCharacteristic().requestMaxNumberOfAlarms();
+    }
+
+    /**
+     * Set the devices alarm clock date and time.
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     * @param dateTime Date and time to set
+     */
+    public void setAlarmClockDateTime(GregorianCalendar dateTime) {
+        getControlPointCharacteristic().adjustTime(dateTime);
+    }
+
+    /**
+     * Set one of the devices unset alarms to a date and time
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     * @param alarmDateTime Date and time the alarm should go off
+     */
+    public void setAlarm(GregorianCalendar alarmDateTime) {
+        getControlPointCharacteristic().addAlarm(alarmDateTime);
+    }
+
+    /**
+     * Request information about a specific alarm from the device.
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     * @param alarmId The id of an alarm
+     */
+    public void requestAlarm(int alarmId) {
+        getControlPointCharacteristic().readAlarm(alarmId);
+    }
+
+    /**
+     * Remove a specific alarm from the device
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     * @param alarmId The id of the alarm in question
+     */
+    public void removeAlarm(int alarmId) {
+        getControlPointCharacteristic().removeAlarm(alarmId);
+    }
+
+    /**
+     * Deletes all active or past alarms from the device
+     * The response data is provided by means of notification from the device to the
+     * client (the client must subscribe to notifications in advance)
+     */
+    public void removeAllAlarms() {
+        getControlPointCharacteristic().removeAllAlarms();
+    }
+
+    private ChAlarmClockCurrentDateAndTime mChCurrentDateAndTime;
+    private ChAlarmClockControlPoint mChAlarmClockControlPoint;
 }
