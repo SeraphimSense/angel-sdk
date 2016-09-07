@@ -30,7 +30,6 @@
  */
 package com.angel.sdk;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -76,7 +75,7 @@ public class BleDevice {
     }
 
     public BleDevice(Context context, LifecycleCallback lifecycleCallback, Handler callbackHandler) {
-        mActivity = (Activity) context;
+        mContext = context;
         mLifecycleCallback = lifecycleCallback;
         mCallbackHandler = callbackHandler;
     }
@@ -102,9 +101,9 @@ public class BleDevice {
         mDeviceAddress = deviceAddress;
         if (mBleController == null) {
             mAction = Action.CONNECT;
-            Intent gattServiceIntent = new Intent(mActivity.getApplicationContext(),
+            Intent gattServiceIntent = new Intent(mContext.getApplicationContext(),
                                                   BleController.class);
-            boolean gotBinded = mActivity.getApplicationContext().bindService(gattServiceIntent,
+            boolean gotBinded = mContext.getApplicationContext().bindService(gattServiceIntent,
                                                                               mServiceConnection,
                                                                               Context.BIND_AUTO_CREATE);
             if (!gotBinded) throw new RuntimeException("Failed to bind to BleController");
@@ -429,7 +428,7 @@ public class BleDevice {
     private BluetoothGatt mBluetoothGatt;
     private Action mAction = Action.IDLE;
     private String mDeviceAddress;
-    private final Activity mActivity;
+    private final Context mContext;
     private final LifecycleCallback mLifecycleCallback;
     private BleController mBleController = null;
     private final HashMap<UUID, BleService> mBleServices = new HashMap<UUID, BleService>();
