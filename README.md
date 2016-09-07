@@ -22,4 +22,23 @@ In order to participate in our open development process, you may:
 * open a new and discuss existing threads in  [OpenHardware-Forum](https://www.openhealthhub.org/c/open-medical-hardware)
 
 
-Angel Sensor SDK is under active development. For more info, please refer to [www.angelsensor.com/develop](http://www.angelsensor.com/develop/).
+# What is known to work:
+ * Heart Rate: yes
+ * PPG (Heart Rate Waveform): yes
+ * Blood Oxygen: not implemented
+ * Temperature: yes
+ * Activity:
+   * Step Count: yes
+   * Acceleration Energy Magnitude: yes
+   * Gyroscope: yes
+   * Fall Detection: no
+ * Calories: no
+ * Setps: yes
+ * Sleep Quality: no
+ * Acceleration: yes
+ * Orientation: no
+ * Health Jounal: likely in firmware, no sdk implementation yet
+ * Alarm Clock: implemented in firmware and sdk, no interface yet
+
+
+Angel Sensor SDK does not seem to be under active development by the company anymore. For more info, please refer to [www.angelsensor.com/develop](http://www.angelsensor.com/develop/).
