@@ -39,6 +39,7 @@ In order to participate in our open development process, you may:
  * Orientation: no
  * Health Jounal: likely in firmware, no sdk implementation yet
  * Alarm Clock: implemented in firmware and sdk, no interface yet
+ * Lua support: no documentation, likely not implemented in firmware
 
 
 Angel Sensor SDK does not seem to be under active development by the company anymore. For more info, please refer to [www.angelsensor.com/develop](http://www.angelsensor.com/develop/).
